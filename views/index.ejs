@@ -1,11 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Home</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>School API Documentation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    pre {
+      background: #eee;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Hello, I'm a demo heading</h1>
+  <h1>School API Documentation</h1>
+
+  <section>
+    <h2>1. GET /listSchools/:latitude/:longitude</h2>
+    <p>Returns a list of schools sorted by proximity to the given geographic coordinates.</p>
+    <p><strong>Parameters:</strong></p>
+    <ul>
+      <li><code>latitude</code> - User's latitude (decimal degrees)</li>
+      <li><code>longitude</code> - User's longitude (decimal degrees)</li>
+    </ul>
+    <p><strong>Example request:</strong></p>
+    <pre>GET /listSchools/28.6139/77.2090</pre>
+    <p><strong>Example response:</strong></p>
+    <pre>[
+  {
+    "schoolName": "Sunrise Valley High",
+    "schoolDistance": 4
+  },
+  {
+    "schoolName": "Greenwood Public School",
+    "schoolDistance": 13
+  }
+]</pre>
+  </section>
+
+  <section>
+    <h2>2. POST /addSchool</h2>
+    <p>Adds a new school to the database.</p>
+    <p><strong>Example Request body:</strong></p>
+    <pre>{
+  "name": "Greenwood Public School",
+  "address": "Sector 9, Rohini, Delhi",
+  "latitude": 28.7166,
+  "longitude": 77.1395
+}</pre>
+    <p><strong>Response:</strong> Confirmation with inserted school details or validation error.</p>
+  </section>
+
+  <footer>
+    <p>Made with care by Bhupesh Boora</p>
+    <i>This collection is intended for demonstration and educational purposes only.</i>
+  </footer>
 </body>
 </html>
