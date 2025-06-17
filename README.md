@@ -1,4 +1,4 @@
-# Location-Based Places API
+# Location Based Places API
 
 This project provides a simple RESTful API to manage and retrieve location based data entries based on geographic coordinates.
 
@@ -104,7 +104,7 @@ Adds a new place to the database.
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/bhupeshboora/place-API.git
+git clone https://github.com/bhupeshboora/PlaceAPI.git
 cd location-api
 ```
 
