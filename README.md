@@ -139,7 +139,7 @@ APP_PORT=3000
 5. **Start the server:**
 
 ```bash
-npm start
+node server.js
 ```
 
 ---
