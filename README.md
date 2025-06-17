@@ -105,7 +105,7 @@ Adds a new place to the database.
 
 ```bash
 git clone https://github.com/bhupeshboora/PlaceAPI.git
-cd location-api
+cd PlaceAPI
 ```
 
 2. **Install dependencies:**
