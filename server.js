@@ -9,11 +9,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 dotenv.config();
 const db = new pg.Client
 ({
-  connectionString: process.env.DATABASE_URL,
-  ssl:
-  {
-    rejectUnauthorized: false
-  }
+  user: process.env.DATABASE_USER,
+  host: "localhost",
+  database: process.env.DATABASE_NAME,
+  password: process.env.DATABASE_PASSWORD,
+  port: process.env.DATABASE_PORT
 });
 
 db.connect();
@@ -28,24 +28,24 @@ app.get("/", (req, res) =>
     res.render("index.ejs");
 });
 
-app.get("/listSchools/:latitude/:longitude", async (req, res) =>
+app.get("/listPlaces/:latitude/:longitude", async (req, res) =>
 {
     const latitude = parseFloat(req.params.latitude);
     const longitude = parseFloat(req.params.longitude);
     
     try
     {
-        const result = await db.query("SELECT * FROM school_info");
+        const result = await db.query("SELECT * FROM place_info");
         if (result.rowCount > 0)
         {
-            const schools = result.rows;
+            const places = result.rows;
             
-            const schoolsInOrder = sortSchools(latitude, longitude, schools);
-            res.status(200).send(schoolsInOrder);
+            const placesInOrder = sortSchools(latitude, longitude, places);
+            res.status(200).send(placesInOrder);
 
         } else
         {
-            res.status(404).json({message: "No schools added in the database"});
+            res.status(404).json({message: "No places added in the database"});
         }
         
     } catch (error)
@@ -56,7 +56,7 @@ app.get("/listSchools/:latitude/:longitude", async (req, res) =>
 
 });
 
-app.post("/addSchool", async (req, res) =>
+app.post("/addPlace", async (req, res) =>
 {
     const name = req.body.name;
     const address = req.body.address;
@@ -80,10 +80,10 @@ app.post("/addSchool", async (req, res) =>
 
     try
     {
-        const insertedData = await db.query("INSERT INTO school_info (name, address, latitude, longitude) VALUES ($1, $2, $3, $4) RETURNING *",
+        const insertedData = await db.query("INSERT INTO place_info (name, address, latitude, longitude) VALUES ($1, $2, $3, $4) RETURNING *",
         [name, address, latitude, longitude]);
 
-        res.status(201).json({message: "Following school was inserted in the database:", school: insertedData.rows[0]});
+        res.status(201).json({message: "Following place was inserted in the database:", place: insertedData.rows[0]});
 
     } catch (error)
     {
@@ -111,19 +111,19 @@ function getHaversineDistance(lat1, lon1, lat2, lon2)
     return R * c;
 }
 
-function sortSchools(userLat, userLong, schools)
+function sortSchools(userLat, userLong, places)
 {
-    const arrayOfSortedSchools = schools.map(school =>
+    const arrayOfSortedPlaces = places.map(place =>
     {
-        const distance = getHaversineDistance(userLat, userLong, school.latitude, school.longitude);
+        const distance = getHaversineDistance(userLat, userLong, place.latitude, place.longitude);
 
         return {
-            schoolName: school.name,
-            schoolDistance: Math.floor(distance)
+            placeName: place.name,
+            placeDistance: Math.floor(distance)
         };
     });
 
-    arrayOfSortedSchools.sort((a, b) => a.schoolDistance - b.schoolDistance);
+    arrayOfSortedPlaces.sort((a, b) => a.placeDistance - b.placeDistance);
 
-    return arrayOfSortedSchools;
+    return arrayOfSortedPlaces;
 }
